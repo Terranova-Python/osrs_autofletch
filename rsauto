@@ -49,7 +49,7 @@ def go_function():
         # Corrected: time.sleep requires a float, so we use uniform
         time.sleep(random.uniform(0.01, 0.04))
         pyautogui.click(random_x1, random_y1)
-t
+
         time.sleep(random.uniform(0.01, 0.04))
         pyautogui.click(random_x2, random_y2)
 
