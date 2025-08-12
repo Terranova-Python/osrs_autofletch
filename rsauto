@@ -1,18 +1,84 @@
-import pyautogui, random, sys, time
+import pyautogui, random, time
+import keyboard # This library is for detecting key presses
 
+# Coordinates for the two areas
 x1, y1 = 1309, 363
 x2, y2 = 1310, 410
 
-def move_on_click(x1,y1,x2,y2):
-    for i in range(1, 10):
-        random_x1 = x1 - random.randint(1,5)
-        random_y1 = y1 - random.randint(1,5)
-        random_x2 = x2 - random.randint(1,5)
-        random_y2 = y2 - random.randint(1,5)
+# --- Functions ---
 
-        time.sleep(random.randint(.01, .04))
+def test_function():
+    """
+    Moves the mouse to the two areas 10 times.
+    This function will be triggered by pressing 't'.
+    """
+    print("Running test function (10 clicks per area)...")
+    for i in range(10): # This runs 10 times as requested.
+        # Generate random coordinates for the first area
+        random_x1 = x1 - random.randint(1, 5)
+        random_y1 = y1 - random.randint(1, 5)
+
+        # Generate random coordinates for the second area
+        random_x2 = x2 - random.randint(1, 5)
+        random_y2 = y2 - random.randint(1, 5)
+
+        # Corrected: time.sleep requires a float, so we use uniform for better precision
+        # The original code had a bug that would cause a TypeError here.
+        time.sleep(random.uniform(0.01, 0.04))
         pyautogui.click(random_x1, random_y1)
-        time.sleep(random.randint(.01, .04))
+
+        time.sleep(random.uniform(0.01, 0.04))
+        pyautogui.click(random_x2, random_y2)
+    print("Test function complete.")
+
+def go_function():
+    """
+    Moves the mouse to the two areas repeatedly with a random break.
+    This function will be triggered by pressing 'g'.
+    """
+    print("Running go function (with random breaks)...")
+    while not keyboard.is_pressed('esc'): # Loop until 'esc' is pressed
+        # Generate random coordinates for the first area
+        random_x1 = x1 - random.randint(1, 5)
+        random_y1 = y1 - random.randint(1, 5)
+
+        # Generate random coordinates for the second area
+        random_x2 = x2 - random.randint(1, 5)
+        random_y2 = y2 - random.randint(1, 5)
+
+        # Corrected: time.sleep requires a float, so we use uniform
+        time.sleep(random.uniform(0.01, 0.04))
+        pyautogui.click(random_x1, random_y1)
+t
+        time.sleep(random.uniform(0.01, 0.04))
         pyautogui.click(random_x2, random_y2)
 
-move_on_click(x1,y1,x2,y2)
+        # Add a random break every so often
+        # There's a 1 in 10 chance of a break after each pair of clicks
+        if random.randint(1, 100) == 1:
+            # Take a random break
+            break_time = random.uniform(1.2, 5.5)
+            print(f"Taking a random break for {break_time:.2f} seconds...")
+            time.sleep(break_time)
+
+    print("Go function stopped.")
+
+# --- Main Program Loop ---
+
+print("Program running. Press 't' to run the test, 'g' to run the go function, or 'esc' to quit.")
+
+while True:
+    try:
+        # Check for key presses
+        if keyboard.is_pressed('t'):
+            test_function()
+            time.sleep(1) # Add a small delay to prevent multiple triggers from one key press
+        elif keyboard.is_pressed('g'):
+            go_function()
+            time.sleep(1)
+        elif keyboard.is_pressed('esc'):
+            print("Exiting program.")
+            break
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        break
